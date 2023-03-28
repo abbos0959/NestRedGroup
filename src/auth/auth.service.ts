@@ -20,18 +20,42 @@ export class AuthService {
     private UserRepository: Repository<UserEntity>,
     private readonly jwtService: JwtService,
   ) {}
-  create(createAuthDto: CreateAuthDto) {
-    return 'This action adds a new auth';
-  }
+
+  //============Register qilish===================
 
   async register(dto: CreateAuthDto) {
     const user = await this.UserRepository.findOneBy({ email: dto.email });
     if (user) {
       throw new BadRequestException('bunday user avvaldan mavjud ');
     }
+
+    const hashPassword = await hash(dto.password, 10);
+
+    const newUser = await this.UserRepository.create({
+      email: dto.email,
+      password: hashPassword,
+    });
+
+    const user1 = await this.UserRepository.save(newUser);
+    console.log(newUser);
+
+    return {
+      user: await this.UserFields(user1),
+      accesstoken: await this.issueAccessToken(user1.id),
+    };
   }
 
-  /////////////=========== signIn================== ////////////////////////////////
+  //=====login qilish======
+
+  async Login(dto: CreateAuthDto) {
+    const user = await this.ValidateUSer(dto);
+    return {
+      user: this.UserFields(user),
+      accesstoken: await this.issueAccessToken(user.id),
+    };
+  }
+
+  /////////////=========== validate================== ////////////////////////////////
 
   async ValidateUSer(dto: CreateAuthDto) {
     const user = await this.UserRepository.findOne({
@@ -51,7 +75,7 @@ export class AuthService {
     return user;
   }
 
-  // ======finish sign in ======//////
+  // ======finish validate ======//////
 
   // ========Token berish=======//
   async issueAccessToken(userId: number) {
@@ -59,25 +83,7 @@ export class AuthService {
   }
 
   async UserFields(user: UserEntity) {
-    return {
-      id: user.id,
-      email: user.email,
-    };
-  }
-
-  findAll() {
-    return `This action returns all auth`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} auth`;
-  }
-
-  update(id: number, updateAuthDto: UpdateAuthDto) {
-    return `This action updates a #${id} auth`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} auth`;
+    return user
+   
   }
 }

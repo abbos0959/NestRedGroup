@@ -1,3 +1,5 @@
+import { CommentEntity } from './../comment/entities/comment.entity';
+import { VideoEntity } from './../video/entities/video.entity';
 import { UserEntity } from './../users/entities/user.entity';
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
@@ -12,5 +14,5 @@ export const OrmConfig = async (
   password: 'abbos1999',
   database: 'RedGroup',
   synchronize: true,
-  entities: [],
+  entities: [UserEntity, SubscribEntity, VideoEntity, CommentEntity],
 });
