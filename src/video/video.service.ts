@@ -146,9 +146,9 @@ export class VideoService {
 
     const newVideo = this.videorRepository.create(defaultValue);
     const video = await this.videorRepository.save(newVideo);
-    return video.id;
+    return video;
   }
-  async deleteVide(id: number) {
+  async deleteVideo(id: number) {
     const video = await this.videorRepository.delete({ id });
     return video;
   }
@@ -160,6 +160,16 @@ export class VideoService {
       throw new NotFoundException('bunday video mavjud emas');
     }
     video.views++;
+    return this.videorRepository.save(video);
+  }
+
+  async UpdatecountLikes(id: number) {
+    const video = await this.GetByIdVideo(id);
+
+    if (!video) {
+      throw new NotFoundException('bunday video mavjud emas');
+    }
+    video.likes++;
     return this.videorRepository.save(video);
   }
 }
