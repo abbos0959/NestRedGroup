@@ -50,7 +50,7 @@ export class AuthService {
   async Login(dto: CreateAuthDto) {
     const user = await this.ValidateUSer(dto);
     return {
-      user: this.UserFields(user),
+      user: await  this.UserFields(user),
       accesstoken: await this.issueAccessToken(user.id),
     };
   }
@@ -83,7 +83,6 @@ export class AuthService {
   }
 
   async UserFields(user: UserEntity) {
-    return user
-   
+    return user;
   }
 }
