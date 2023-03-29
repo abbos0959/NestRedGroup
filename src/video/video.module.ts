@@ -7,6 +7,6 @@ import { VideoController } from './video.controller';
 @Module({
   controllers: [VideoController],
   providers: [VideoService],
-  imports:[TypeOrmModule.forFeature([VideoEntity])]
+  imports: [TypeOrmModule.forFeature([VideoEntity])],
 })
 export class VideoModule {}

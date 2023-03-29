@@ -57,6 +57,8 @@ export class UsersService {
       if (body.password) {
         user.password = await hash(body.password, 10);
       }
+      console.log(body.name);
+      
 
       user.email = body.email;
 
@@ -81,10 +83,10 @@ export class UsersService {
     if (!IsSubscribe) {
       const newSubscriben = await this.subscribeRepository.create(data);
       await this.subscribeRepository.save(newSubscriben);
-      return true;
+      return "siz obuna bo'ldingiz";
     }
     await this.subscribeRepository.delete(data);
-    return false;
+    return "siz obunani bekor qildingiz";
   }
 
   async GetAllUser() {
